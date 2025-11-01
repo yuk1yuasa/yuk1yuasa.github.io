@@ -15,7 +15,7 @@ canvas width:<input id="width" type="number" value=300 onchange="draw()"></input
 pixel width:<input id="pxwidth" type="number" value=30 onchange="draw()"></input>
  height:<input id="pxheight" type="number" value=30 onchange="draw()"></input><br>
 <br><input id='color' type='color'></input>
-<button id="grid" onclick="showgrid()">Show grid</button><br>
+<button id="grid" onclick="showhidegrid()">Show grid</button><br>
 <button id="st" onclick="undo()">undo</button><button id="st" onclick="clearcanvas()">clear</button>
 <br><br><br>
 <button type="button" onclick="pixel2ps()">Make it PostScript!</button><br>
@@ -126,7 +126,7 @@ showpage`
     document.getElementById('ps').value=str
 }
 
-function showgrid(){
+function showhidegrid(){
  var grid=gete('grid');
  if(!showgrid){
   showgrid=True;
