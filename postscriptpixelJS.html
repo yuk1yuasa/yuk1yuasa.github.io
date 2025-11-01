@@ -26,11 +26,11 @@ Try your postscript here:<br>
 <script>
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
- ctx.transform(1, 0, 0, -1, 0, canvas.height);
 var pixelx = [];var pixely=[]; var pixelr=[]; var pixelg=[]; var pixelb=[];var pixelrgb=[];
 pxx='';pxy='';pxr='';pxg='';pxb='';
 var showgrid = False;
 
+ctx.transform(1, 0, 0, -1, 0, canvas.height);
 
 function clik(event){
 var x = Math.floor(event.offsetX/gete('pxwidth').value);
@@ -44,11 +44,18 @@ canvas.width=document.getElementById("width").value
 canvas.height=document.getElementById('height').value
 var w = gete('pxwidth').value;var h = gete('pxheight').value;
 if(showgrid){
+ var strokestyle=ctx.strokeStyle;
+ ctx.strokeStyle='black';
  for(var i=1;i<=Math.floor(canvas.width/w);i++){
-  
+  ctx.moveTo(w*i, 0);
+  ctx.lineTo(w*i, canvas.height);
  }
  for(var j=1;j<=Math.floor(canvas.height/h);j++){
+  ctx.moveTo(0, h*j);
+  ctx.lineTo(canvas.width, h*j);
  }
+ ctx.stroke();
+ ctx.strokeStyle=strokestyle;
 }
 for(var i=0;i<pixelx.length;i++){
     ctx.fillStyle=pixelrgb[i];
