@@ -14,7 +14,7 @@ canvas width:<input id="width" type="number" value=300 onchange="draw()"></input
 pixel width:<input id="pxwidth" type="number" value=30 onchange="draw()"></input>
  height:<input id="pxheight" type="number" value=30 onchange="draw()"></input><br>
 <br><input id='color' type='color'></input>
-<button id="st" onclick="clearcanvas()">clear</button>
+<button id="st" onclick="clearcanvas()">clear</button><button id="st" onclick="undo()">undo</button>
 <br><br><br>
 <button type="button" onclick="pixel2ps()">Make it PostScript!</button><br>
 <textarea id="ps"></textarea><br><br>
@@ -108,6 +108,14 @@ showpage`
     document.getElementById('ps').value=str
 }
 
+function undo(){
+ if(pixelx.length>0){
+  pixelx.pop()
+  pixely.pop()
+ }
+ draw()
+}
+ 
 function clearcanvas(){
 pixelx = [];pixely=[];pixelr=[];pixelg=[];pixelb=[];pixelrgb=[];
 pxx='';pxy='';pxr='';pxg='';pxb='';
