@@ -5,6 +5,7 @@
 <title>Pixel art to PostScript</title>
 <style>
 canvas{border: 1px solid black;padding: 0;display: block;}
+button{width:30px;height:10px;}
 </style>
 </head>
 <body onkeydown="move(event)">
@@ -14,7 +15,8 @@ canvas width:<input id="width" type="number" value=300 onchange="draw()"></input
 pixel width:<input id="pxwidth" type="number" value=30 onchange="draw()"></input>
  height:<input id="pxheight" type="number" value=30 onchange="draw()"></input><br>
 <br><input id='color' type='color'></input>
-<button id="st" onclick="clearcanvas()">clear</button><button id="st" onclick="undo()">undo</button>
+<button id="grid" onclick="showgrid()">Show grid</button><br>
+<button id="st" onclick="undo()">undo</button><button id="st" onclick="clearcanvas()">clear</button>
 <br><br><br>
 <button type="button" onclick="pixel2ps()">Make it PostScript!</button><br>
 <textarea id="ps"></textarea><br><br>
@@ -23,9 +25,11 @@ Try your postscript here:<br>
 <iframe src='https://ehubsoft.herokuapp.com/psviewer/?authuser=0' title='PostScript compiler' width=700 height=400></iframe>
 <script>
 let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");ctx.transform(1, 0, 0, -1, 0, 0);
+let ctx = canvas.getContext("2d");
+ ctx.transform(1, 0, 0, -1, 0, canvas.height);
 var pixelx = [];var pixely=[]; var pixelr=[]; var pixelg=[]; var pixelb=[];var pixelrgb=[];
 pxx='';pxy='';pxr='';pxg='';pxb='';
+var showgrid = False;
 
 
 function clik(event){
@@ -39,9 +43,16 @@ function draw(){
 canvas.width=document.getElementById("width").value
 canvas.height=document.getElementById('height').value
 var w = gete('pxwidth').value;var h = gete('pxheight').value;
+if(showgrid){
+ for(var i=1;i<=Math.floor(canvas.width/w);i++){
+  
+ }
+ for(var j=1;j<=Math.floor(canvas.height/h);j++){
+ }
+}
 for(var i=0;i<pixelx.length;i++){
     ctx.fillStyle=pixelrgb[i];
-    ctx.fillRect(pixelx[i]*w, canvas.height-(pixely[i]+1)*h, w, h);
+    ctx.fillRect(pixelx[i]*w, pixely[i]*h, w, h);
 }
 }
 
@@ -108,6 +119,18 @@ showpage`
     document.getElementById('ps').value=str
 }
 
+function showgrid(){
+ var grid=gete('grid');
+ if(!showgrid){
+  showgrid=True;
+  grid.innerHTML='Hide grid';
+ }else{
+  showgrid=False;
+  grid.innerHTML='Show grid';
+ }
+ draw();
+}
+ 
 function undo(){
  if(pixelx.length>0){
   pixelx.pop()
