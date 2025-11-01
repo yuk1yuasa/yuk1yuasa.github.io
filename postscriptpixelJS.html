@@ -29,8 +29,7 @@ let ctx = canvas.getContext("2d");
 var pixelx = [];var pixely=[]; var pixelr=[]; var pixelg=[]; var pixelb=[];var pixelrgb=[];
 var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
 var showgrid = False;
-
-ctx.transform(1, 0, 0, -1, 0, canvas.height);
+draw()
 
 function clik(event){
 var x = Math.floor(event.offsetX/gete('pxwidth').value);
@@ -42,6 +41,7 @@ draw()
 function draw(){
 canvas.width=document.getElementById("width").value
 canvas.height=document.getElementById('height').value
+ctx.setTransform(1, 0, 0, -1, 0, canvas.height);
 var w = gete('pxwidth').value;var h = gete('pxheight').value;
 if(showgrid){
  var strokestyle=ctx.strokeStyle;
