@@ -34,7 +34,8 @@ draw()
 function clik(event){
 var x = Math.floor(event.offsetX/gete('pxwidth').value);
 var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
-pixelx.push(x);pixely.push(y);pixelrgb.push(gete('color').value);pixelr.push(Number('0x'+gete('color').value.slice(1, 3))/255);pixelg.push(Number('0x'+gete('color').value.slice(3, 5))/255);pixelb.push(Number('0x'+gete('color').value.slice(5, 7))/255);
+var rgb = gete('color').value;
+pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);pixelr.push(Number('0x'+rgb.slice(1, 3))/255);pixelg.push(Number('0x'+rgb.slice(3, 5))/255);pixelb.push(Number('0x'+rgb.slice(5, 7))/255);
 draw()
 }
 
@@ -142,6 +143,10 @@ function undo(){
  if(pixelx.length>0){
   pixelx.pop()
   pixely.pop()
+  pixelr.pop()
+  pixelg.pop()
+  pixelb.pop()
+  pixelrgb.pop()
  }
  draw()
 }
