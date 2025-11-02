@@ -28,7 +28,7 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 var pixelx = [];var pixely=[]; var pixelr=[]; var pixelg=[]; var pixelb=[];var pixelrgb=[];
 var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
-var showrid = false;
+var showgrid = false;
 draw()
 
 function clik(event){
@@ -129,7 +129,7 @@ showpage`
 function showhidegrid(){
  var grid=gete('grid');
  if(!showgrid){
-  showrid=true;
+  showgrid=true;
   grid.innerHTML='Hide grid';
  }else{
   showgrid=false;
