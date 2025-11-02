@@ -8,7 +8,7 @@ canvas{border: 1px solid black;padding: 0;margin: auto;display: block;}
 </style>
 </head>
 <body>
-<p>Some examples of PostScript pixel art</p><br>
+<h2>Some examples of PostScript pixel art</h2><br>
 <select name="examples" id="ex" onchange="change()">
   <option disabled selected value>--select--</option>
   <option value="pikachu">Pikachu</option>
@@ -84,8 +84,10 @@ function change(){
  switch(selection){
    case 'pikachu':
      document.getElementById("postscript").innerHTML=pikachustr;
+     break;
    case 'sans':
      document.getElementById("postscript").innerHTML=sansstr;
+     break;
  }
   document.getElementById("psexplain").innerHTML=`PostScript example for ${selection}:`
 }
