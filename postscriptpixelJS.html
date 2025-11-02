@@ -28,7 +28,7 @@ let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 var pixelx = [];var pixely=[]; var pixelr=[]; var pixelg=[]; var pixelb=[];var pixelrgb=[];
 var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
-let showgrid = False;
+var showinggrid = False;
 draw()
 
 function clik(event){
@@ -43,7 +43,7 @@ canvas.width=document.getElementById("width").value
 canvas.height=document.getElementById('height').value
 ctx.setTransform(1, 0, 0, -1, 0, canvas.height);
 var w = gete('pxwidth').value;var h = gete('pxheight').value;
-if(showgrid){
+if(showinggrid){
  var strokestyle=ctx.strokeStyle;
  ctx.strokeStyle='black';
  for(var i=1;i<=Math.floor(canvas.width/w);i++){
@@ -129,10 +129,10 @@ showpage`
 function showhidegrid(){
  var grid=gete('grid');
  if(!showgrid){
-  showgrid=True;
+  showinggrid=True;
   grid.innerHTML='Hide grid';
  }else{
-  showgrid=False;
+  showinggrid=False;
   grid.innerHTML='Show grid';
  }
  draw();
