@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>PostScript pixel art gallery</title>
+<style>
+canvas{border: 1px solid black;padding: 0;margin: auto;display: block;}
+</style>
+</head>
+<body>
+<p>Some examples of PostScript pixel art</p><br>
+<select name="examples" id="ex" onchange="change()">
+  <option value="pikachu">Pikachu</option>
+</select>
+<textarea id="postscript"></textarea>
+<script>
+function change(){}
+
+function gete(str){
+return document.getElementById(str)
+}
+</script>
+</body>
+</html>
