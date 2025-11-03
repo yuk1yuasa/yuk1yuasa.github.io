@@ -26,7 +26,7 @@ Try your postscript here:<br>
 <script>
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
-var pixelx = [];var pixely=[]; var pixelr=[]; var pixelg=[]; var pixelb=[];var pixelrgb=[];
+var pixelx = [];var pixely=[];var pixelrgb=[];
 var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
 var showgrid = false;
 draw()
@@ -36,9 +36,9 @@ var x = Math.floor(event.offsetX/gete('pxwidth').value);
 var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
 var rgb = gete('color').value;
 for(i=0;i<pixelx.length;i++){//overwrite
- if(pixelx[i]==x&&pixely[i]==y){pixelx.splice(i, 1);pixely.splice(i, 1);pixelr.splice(i, 1);pixelg.splice(i, 1);pixelb.splice(i, 1);pixelrgb.splice(i, 1);}
+ if(pixelx[i]==x&&pixely[i]==y){pixelx.splice(i, 1);pixely.splice(i, 1);pixelrgb.splice(i, 1);}
 }
-pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);pixelr.push(Number('0x'+rgb.slice(1, 3))/255);pixelg.push(Number('0x'+rgb.slice(3, 5))/255);pixelb.push(Number('0x'+rgb.slice(5, 7))/255);
+pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);
 draw()
 }
 
@@ -73,22 +73,22 @@ function pixel2ps(){
     pxy='['+pixely.join(" ")+']'
     
     pxr='['
-    for(var i=0; i<pixelr.length-1;i++){
+    for(var i=0; i<pixelrgb.length;i++){
         pxr=pxr+Number('0x'+pixelrgb[i].slice(1, 3))/255+' '
     }
-    pxr=pxr+pixelr[pixelr.length-1]+']'
+    pxr=pxr+']'
     
     pxg='['
-    for(var i=0; i<pixelg.length-1;i++){
-        pxg=pxg+pixelg[i]+' '
+    for(var i=0; i<pixelrgb.length;i++){
+        pxg=pxg+Number('0x'+pixelrgb[i].slice(3, 5))/255+' '
     }
-    pxg=pxg+pixelg[pixelg.length-1]+']'
+    pxg=pxg+']'
     
     pxb='['
-    for(var i=0; i<pixelb.length-1;i++){
-        pxb=pxb+pixelb[i]+' '
+    for(var i=0; i<pixelrgb.length;i++){
+        pxb=pxb+Number('0x'+pixelrgb[i].slice(5, 7))/255+' '
     }
-    pxb=pxb+pixelb[pixelb.length-1]+']'
+    pxb=pxb+']'
 
     var str=`%!PS-Adobe-3.0
 
@@ -138,16 +138,13 @@ function undo(){
  if(pixelx.length>0){
   pixelx.pop()
   pixely.pop()
-  pixelr.pop()
-  pixelg.pop()
-  pixelb.pop()
   pixelrgb.pop()
  }
  draw()
 }
  
 function clearcanvas(){
-pixelx = [];pixely=[];pixelr=[];pixelg=[];pixelb=[];pixelrgb=[];
+pixelx = [];pixely=[];pixelrgb=[];
 pxx='';pxy='';pxr='';pxg='';pxb='';
 draw()
 }
