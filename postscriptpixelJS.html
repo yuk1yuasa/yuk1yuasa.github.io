@@ -12,8 +12,8 @@ button{padding:15px 30px;background-color:#fffb24;}
 <canvas id="canvas" width=300 height=300 onclick="clik(event)"></canvas>
 canvas width:<input id="width" type="number" value=300 onchange="draw()"></input>
  height:<input id="height" type="number" value=300 onchange="draw()"></input><br><br>
-pixel width:<input id="pxwidth" type="number" value=30 onchange="draw()"></input>
- height:<input id="pxheight" type="number" value=30 onchange="draw()"></input><br>
+pixel width:<input id="pxwidth" type="number" value=30 min=1 onchange="draw()"></input>
+ height:<input id="pxheight" type="number" value=30 min=1 onchange="draw()"></input><br>
 <br><input id='color' type='color'></input>
 <button id="grid" onclick="showhidegrid()">Show grid</button><button id="undo" onclick="undo()">undo</button><button id="redo" onclick="redo()">redo</button><button id="st" onclick="clearcanvas()">clear</button>
 <br><br><br>
@@ -33,9 +33,25 @@ var changelog=[];
 var undolog=[];
 draw()
 
+function move(event){
+ switch(event.key){
+  case "u":
+   undo();
+   break;
+  case "r":
+   redo();
+   break;
+ }
+}
+ 
 function clik(event){
  var x = Math.floor(event.offsetX/gete('pxwidth').value);
  var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
+ if(false){//erase
+  for(i=0;i<pixelx.length;i++){
+   if(pixelx[i]==x&&pixely[i]==y){changelog.push(`e,${x},${y},${pixelrgb[i]}`);}
+  }
+ }
  var rgb = gete('color').value;
  undolog=[];
  for(i=0;i<pixelx.length;i++){//overwrite
@@ -69,7 +85,7 @@ for(var i=0;i<pixelx.length;i++){//draw pixels
     ctx.fillRect(pixelx[i]*w, pixely[i]*h, w, h);
 }
 }
-
+ 
 function pixel2ps(){
     pxx='['+pixelx.join(" ")+']'
 
