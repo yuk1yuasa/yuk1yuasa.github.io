@@ -14,6 +14,9 @@ canvas width:<input id="width" type="number" value=300 onchange="draw()"></input
  height:<input id="height" type="number" value=300 onchange="draw()"></input><br><br>
 pixel width:<input id="pxwidth" type="number" value=30 min=1 onchange="draw()"></input>
  height:<input id="pxheight" type="number" value=30 min=1 onchange="draw()"></input><br>
+<select name="tools" id="tools">
+ <option value="pixel">Pixel</option>
+ <option value="eraser">Eraser</option>
 <br><input id='color' type='color'></input>
 <button id="grid" onclick="showhidegrid()">Show grid</button><button id="undo" onclick="undo()">undo</button><button id="redo" onclick="redo()">redo</button><button id="st" onclick="clearcanvas()">clear</button>
 <br><br><br>
@@ -41,17 +44,20 @@ function move(event){
   case "r":
    redo();
    break;
+  case "g":
+   showhidegrid();
+   break;
  }
 }
  
 function clik(event){
  var x = Math.floor(event.offsetX/gete('pxwidth').value);
  var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
- if(false){//erase
+ if(gete("tools").value=="eraser"){//erase
   for(i=0;i<pixelx.length;i++){
-   if(pixelx[i]==x&&pixely[i]==y){changelog.push(`e,${x},${y},${pixelrgb[i]}`);}
-  }
- }
+   if(pixelx[i]==x&&pixely[i]==y){changelog.push(`e,${i},${x},${y},${pixelrgb[i]}`);pixelx.splice(i,1);pixely.splice(i,1);pixelrgb.splice(i,1);}
+  };draw();return;
+ };
  var rgb = gete('color').value;
  undolog=[];
  for(i=0;i<pixelx.length;i++){//overwrite
@@ -164,6 +170,9 @@ function undo(){
    break;
   case "c"://undo change color
    pixelrgb[lastchange[1]]=lastchange[2]
+   break;
+  case "e":
+   pixelx.splice(lastchange[1], 0, lastchange[2]);pixely.splice(lastchange[1], 0, lastchange[3]);pixelrgb.splice(lastchange[1], 0, lastchange[4]);
    break;
   case "x"://undo clear
    pixelx=lastchange[1].split("/");pixely=lastchange[2].split("/");pixelrgb=lastchange[3].split("/");
