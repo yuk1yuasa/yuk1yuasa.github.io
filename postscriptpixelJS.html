@@ -8,7 +8,7 @@ canvas{border: 1px solid black;padding: 0;display: block;}
 button{padding:15px 30px;background-color:#fffb24;border-raduis:10px;}
 </style>
 </head>
-<body onkeydown="move(event)">
+<body onkeydown="move(event)" onmouseup="mouseisdown=false">
 <canvas id="canvas" width=300 height=300 onmousedown="mousedown(event)" onmouseup="clik(event)"></canvas>
 canvas width:<input id="width" type="number" value=300 onchange="draw()"></input>
  height:<input id="height" type="number" value=300 onchange="draw()"></input><br><br>
@@ -34,7 +34,7 @@ var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
 var showgrid = false;
 var changelog=[];
 var undolog=[];
-var mousepos=[];
+var mousepos=[];var mouseisdown=false;
 draw()
 
 function move(event){
@@ -52,7 +52,7 @@ function move(event){
 }
 
 function mousedown(event){
- mousepos=[event.offsetX, event.offsetY];
+ mousepos=[event.offsetX, event.offsetY];mouseisdown=true;
 }
  
 function clik(event){
@@ -198,7 +198,11 @@ function redo(){
    pixelrgb[lastundo[1]]=lastundo[3];
    break;
   case "x"://redo clear
-   clearcanvas();
+   pixelx = [];pixely=[];pixelrgb=[];
+   pxx='';pxy='';pxr='';pxg='';pxb='';
+   break;
+  case "e"://redo erasing
+   pixelx.splice(lastundo[1],1);pixely.splice(lastundo[1],1);pixelrgb.splice(lastundo[1],1);
    break;
  }
  changelog.push(undolog.pop());
