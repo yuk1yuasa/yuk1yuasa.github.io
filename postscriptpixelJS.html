@@ -37,8 +37,9 @@ var x = Math.floor(event.offsetX/gete('pxwidth').value);
 var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
 var rgb = gete('color').value;
 for(i=0;i<pixelx.length;i++){//overwrite
- if(pixelx[i]==x&&pixely[i]==y){changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;}else{pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);changelog.push("a,${x},${y},${rgb}");}
+ if(pixelx[i]==x&&pixely[i]==y){changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();return;}
 }
+pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);changelog.push(`a,${x},${y},${rgb}`);
 draw()
 }
 
