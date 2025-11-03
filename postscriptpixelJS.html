@@ -30,18 +30,19 @@ var pixelx = [];var pixely=[];var pixelrgb=[];
 var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
 var showgrid = false;
 var changelog=[];
-var undolog=[]:
+var undolog=[];
 draw()
 
 function clik(event){
-var x = Math.floor(event.offsetX/gete('pxwidth').value);
-var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
-var rgb = gete('color').value;
-for(i=0;i<pixelx.length;i++){//overwrite
- if(pixelx[i]==x&&pixely[i]==y){changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();return;}
-}
-pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);changelog.push(`a,${x},${y},${rgb}`);
-draw()
+ var x = Math.floor(event.offsetX/gete('pxwidth').value);
+ var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
+ var rgb = gete('color').value;
+ undolog=[];
+ for(i=0;i<pixelx.length;i++){//overwrite
+  if(pixelx[i]==x&&pixely[i]==y){changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();return;}
+ }
+ pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);changelog.push(`a,${x},${y},${rgb}`);
+ draw()
 }
 
 function draw(){
