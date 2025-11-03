@@ -70,7 +70,7 @@ function clik(event){
  var rgb = gete('color').value;
  undolog=[];
  for(i=0;i<pixelx.length;i++){//overwrite
-  if(pixelx[i]==x&&pixely[i]==y){changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();return;}
+  if(pixelx[i]==x&&pixely[i]==y){if(pixelrgb[i]==rgb){return};changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();return;}
  }
  pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);changelog.push(`a,${x},${y},${rgb}`);
  draw()
