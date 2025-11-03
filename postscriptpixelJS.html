@@ -35,6 +35,9 @@ function clik(event){
 var x = Math.floor(event.offsetX/gete('pxwidth').value);
 var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
 var rgb = gete('color').value;
+for(i=0;i<pixelx.length;i++){//overwrite
+ if(pixelx[i]==x&&pixely[i]==y){pixelx.splice(i, 1);pixely.splice(i, 1);pixelr.splice(i, 1);pixelg.splice(i, 1);pixelb.splice(i, 1);pixelrgb.splice(i, 1);}
+}
 pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);pixelr.push(Number('0x'+rgb.slice(1, 3))/255);pixelg.push(Number('0x'+rgb.slice(3, 5))/255);pixelb.push(Number('0x'+rgb.slice(5, 7))/255);
 draw()
 }
@@ -44,42 +47,34 @@ canvas.width=document.getElementById("width").value
 canvas.height=document.getElementById('height').value
 ctx.setTransform(1, 0, 0, -1, 0, canvas.height);
 var w = gete('pxwidth').value;var h = gete('pxheight').value;
-if(showgrid){
+if(showgrid){//show grid
  var strokestyle=ctx.strokeStyle;
  ctx.strokeStyle='black';
- for(var i=1;i<=Math.floor(canvas.width/w);i++){
+ for(var i=1;i<=Math.floor(canvas.width/w);i++){//vertical lines
   ctx.moveTo(w*i, 0);
   ctx.lineTo(w*i, canvas.height);
  }
- for(var j=1;j<=Math.floor(canvas.height/h);j++){
+ for(var j=1;j<=Math.floor(canvas.height/h);j++){//horizontal lines
   ctx.moveTo(0, h*j);
   ctx.lineTo(canvas.width, h*j);
  }
  ctx.stroke();
  ctx.strokeStyle=strokestyle;
 }
-for(var i=0;i<pixelx.length;i++){
+for(var i=0;i<pixelx.length;i++){//draw pixels
     ctx.fillStyle=pixelrgb[i];
     ctx.fillRect(pixelx[i]*w, pixely[i]*h, w, h);
 }
 }
 
 function pixel2ps(){
-    pxx='['
-    for(var i=0; i<pixelx.length-1;i++){
-        pxx=pxx+pixelx[i]+' '
-    }
-    pxx=pxx+pixelx[pixelx.length-1]+']'
+    pxx='['+pixelx.join(" ")+']'
 
-    pxy='['
-    for(var i=0; i<pixely.length-1;i++){
-        pxy=pxy+pixely[i]+' '
-    }
-    pxy=pxy+pixely[pixely.length-1]+']'
+    pxy='['+pixely.join(" ")+']'
     
     pxr='['
     for(var i=0; i<pixelr.length-1;i++){
-        pxr=pxr+pixelr[i]+' '
+        pxr=pxr+Number('0x'+pixelrgb[i].slice(1, 3))/255+' '
     }
     pxr=pxr+pixelr[pixelr.length-1]+']'
     
