@@ -5,11 +5,11 @@
 <title>Pixel art to PostScript</title>
 <style>
 canvas{border: 1px solid black;padding: 0;display: block;}
-button{padding:15px 30px;background-color:#fffb24;}
+button{padding:15px 30px;background-color:#fffb24;border-raduis:10px;}
 </style>
 </head>
 <body onkeydown="move(event)">
-<canvas id="canvas" width=300 height=300 onclick="clik(event)"></canvas>
+<canvas id="canvas" width=300 height=300 onmousedown="mousedown(event)" onmouseup="clik(event)"></canvas>
 canvas width:<input id="width" type="number" value=300 onchange="draw()"></input>
  height:<input id="height" type="number" value=300 onchange="draw()"></input><br><br>
 pixel width:<input id="pxwidth" type="number" value=30 min=1 onchange="draw()"></input>
@@ -20,7 +20,7 @@ pixel width:<input id="pxwidth" type="number" value=30 min=1 onchange="draw()"><
 <br><input id='color' type='color'></input>
 <button id="grid" onclick="showhidegrid()">Show grid</button><button id="undo" onclick="undo()">undo</button><button id="redo" onclick="redo()">redo</button><button id="st" onclick="clearcanvas()">clear</button>
 <br><br><br>
-<button type="button" onclick="pixel2ps()">Make it PostScript!</button><br>
+<button type="button" onclick="pixel2ps()" style="border:none;">Make it PostScript!</button><br>
 <textarea id="ps"></textarea><br><br>
 
 Try your postscript here↓<br>
@@ -34,6 +34,7 @@ var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
 var showgrid = false;
 var changelog=[];
 var undolog=[];
+var mousepos=[]:
 draw()
 
 function move(event){
@@ -48,6 +49,10 @@ function move(event){
    showhidegrid();
    break;
  }
+}
+
+function mousedown(event){
+ mousepos=[event.offsetX, event.offsetY];
 }
  
 function clik(event){
