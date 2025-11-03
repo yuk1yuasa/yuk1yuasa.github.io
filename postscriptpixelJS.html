@@ -139,22 +139,48 @@ function showhidegrid(){
  
 function undo(){
  if(changelog.length<1){return;}
- switch(changelog[changelog.length-1][0]){
+ var lastchange=changelog[changelog.length-1].split(",");
+ switch(lastchange[0]){
   case "a"://undo add
    pixelx.pop()
    pixely.pop()
    pixelrgb.pop()
-  break;
+   break;
   case "c"://undo change color
-   pixelrgb[changelog[changelog.length-1].split(",")[1]]=changelog[changelog.length-1].split(",")[2]
+   pixelrgb[lastchange[1]]=lastchange[2]
+   break;
+  case "x"://undo clear
+   pixelx=lastchange[1].split("/");pixely=lastchange[2].split("/");pixelrgb=lastchange[3].split("/");
+   break;
  }
  undolog.push(changelog.pop());
  draw()
 }
+
+function redo(){
+ if(undolog.length<1){return;}
+ var lastundo=undolog[undolog.length-1].split(",");
+ switch(lastundo[0]){
+  case "a"://redo add
+   pixelx.push(lastundo[1]);pixely.push(lastundo[2]);pixelrgb.push(lastundo[3]);
+   break;
+  case "c"://redo change color
+   pixelrgb[lastundo[1]]=lastundo[3];
+   break;
+  case "x"://redo clear
+   clearcanvas();
+   break;
+ }
+ changelog.push(undolog.pop());
+ draw();
+}
  
 function clearcanvas(){
+if(pixelx.length<1){return;}
 pixelx = [];pixely=[];pixelrgb=[];
 pxx='';pxy='';pxr='';pxg='';pxb='';
+//add to changelog
+changelog.push(`x,${pixelx.join("/")},${pixely.join("/")},${pixelrgb.join("/")}`)
 draw()
 }
 
