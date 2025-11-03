@@ -30,6 +30,7 @@ var pixelx = [];var pixely=[];var pixelrgb=[];
 var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
 var showgrid = false;
 var changelog=[];
+var undolog=[]:
 draw()
 
 function clik(event){
@@ -146,6 +147,7 @@ function undo(){
   case "c"://undo change color
    pixelrgb[changelog[changelog.length-1].split(",")[1]]=changelog[changelog.length-1].split(",")[2]
  }
+ undolog.push(changelog.pop());
  draw()
 }
  
