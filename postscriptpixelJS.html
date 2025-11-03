@@ -177,10 +177,11 @@ function redo(){
  
 function clearcanvas(){
 if(pixelx.length<1){return;}
-pixelx = [];pixely=[];pixelrgb=[];
-pxx='';pxy='';pxr='';pxg='';pxb='';
 //add to changelog
 changelog.push(`x,${pixelx.join("/")},${pixely.join("/")},${pixelrgb.join("/")}`)
+//erase afterwards
+pixelx = [];pixely=[];pixelrgb=[];
+pxx='';pxy='';pxr='';pxg='';pxb='';
 draw()
 }
 
