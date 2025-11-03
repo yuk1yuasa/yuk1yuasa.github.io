@@ -20,7 +20,7 @@ pixel width:<input id="pxwidth" type="number" value=30 onchange="draw()"></input
 <button type="button" onclick="pixel2ps()">Make it PostScript!</button><br>
 <textarea id="ps"></textarea><br><br>
 
-Try your postscript here:<br>
+Try your postscript here↓<br>
 <iframe src='https://ehubsoft.herokuapp.com/psviewer/?authuser=0' title='PostScript compiler' width=700 height=400></iframe>
 <p>Examples of PostScript pixel art:</p><a href='../postscriptgallery.html'>https://yuk1yuasa.github.io/postscriptgallery.html</a>
 <script>
@@ -29,6 +29,7 @@ let ctx = canvas.getContext("2d");
 var pixelx = [];var pixely=[];var pixelrgb=[];
 var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
 var showgrid = false;
+var changelog=[];
 draw()
 
 function clik(event){
@@ -36,9 +37,8 @@ var x = Math.floor(event.offsetX/gete('pxwidth').value);
 var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
 var rgb = gete('color').value;
 for(i=0;i<pixelx.length;i++){//overwrite
- if(pixelx[i]==x&&pixely[i]==y){pixelx.splice(i, 1);pixely.splice(i, 1);pixelrgb.splice(i, 1);}
+ if(pixelx[i]==x&&pixely[i]==y){changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;}else{pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);changelog.push("a,${x},${y},${rgb}");}
 }
-pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);
 draw()
 }
 
@@ -135,10 +135,15 @@ function showhidegrid(){
 }
  
 function undo(){
- if(pixelx.length>0){
-  pixelx.pop()
-  pixely.pop()
-  pixelrgb.pop()
+ if(changelog.length<1){return;}
+ switch(changelog[changelog.length-1][0]){
+  case "a"://undo add
+   pixelx.pop()
+   pixely.pop()
+   pixelrgb.pop()
+  break;
+  case "c"://undo change color
+   pixelrgb[changelog[changelog.length-1].split(",")[1]]=changelog[changelog.length-1].split(",")[2]
  }
  draw()
 }
