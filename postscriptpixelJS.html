@@ -194,6 +194,7 @@ function undo(){
 
 function redo(){
  if(undolog.length<1){return;}
+ if(typeof undolog[undolog.length-1]=='object'){for(var i=0;i<undolog[undolog.length-1].length;i++){}};
  var lastundo=undolog[undolog.length-1].split(",");
  switch(lastundo[0]){
   case "a"://redo add
@@ -219,11 +220,12 @@ function save(){
  alert('PostScript saved');
 }
 
-function load(){if(typeof locaStorage!='object'){return}
+function load(){var localdata=localStorage.getItem("saveddata");
+ if(typeof localdata!='object'){alert('No data stored');return}
  if(!alert('This will overwrite the existing drawing. Continue?')){return}
- pixelx=localStorage.getItem("saveddata")[0];
- pixely=localStorage.getItem("saveddata")[1];
- pixelrgb=localStorage.getItem("saveddata")[2];
+ pixelx=localdata[0];
+ pixely=localdata[1];
+ pixelrgb=localdata[2];
  alert('Loaded on')
  draw();
 }
