@@ -212,6 +212,16 @@ function redo(){
  changelog.push(undolog.pop());
  draw();
 }
+
+function save(){
+ localStorage.setItem("saveddata", [pixelx, pixely, pixelrgb]);
+}
+
+function load(){
+ pixelx=localStorage.getItem("saveddata")[0];
+ pixely=localStorage.getItem("saveddata")[1];
+ pixelrgb=localStorage.getItem("saveddata")[2];
+}
  
 function clearcanvas(){
 if(pixelx.length<1){return;}
