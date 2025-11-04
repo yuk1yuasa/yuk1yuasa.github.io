@@ -216,16 +216,16 @@ function redo(){
 }
 
 function save(){
- localStorage.setItem("saveddata", [pixelx, pixely, pixelrgb]);
+ localStorage.setItem("saveddata", `${pixelx.join("/")},${pixely.join("/")},${pixelrgb.join("/")}`);
  alert('PostScript saved');
 }
 
-function load(){var localdata=localStorage.getItem("saveddata");
- if(typeof localdata!='object'){alert('No data stored');return}
+function load(){var localdata=localStorage.getItem("saveddata").split(",");
+ if(typeof localdata!='string'){alert('No data stored');return}
  if(!alert('This will overwrite the existing drawing. Continue?')){return}
- pixelx=localdata[0];
- pixely=localdata[1];
- pixelrgb=localdata[2];
+ pixelx=localdata[0].split("/");
+ pixely=localdata[1].split("/");
+ pixelrgb=localdata[2].split("/");
  alert('Loaded on')
  draw();
 }
