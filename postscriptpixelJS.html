@@ -220,7 +220,9 @@ function save(){
  alert('PostScript saved');
 }
 
-function load(){var localdata=localStorage.getItem("saveddata").split(",");
+function load(){
+ if(typeof localStorage.getItem("saveddata")!='string'){alert('No data stored');return}
+ var localdata=localStorage.getItem("saveddata").split(",");
  if(typeof localdata!='string'){alert('No data stored');return}
  if(!alert('This will overwrite the existing drawing. Continue?')){return}
  pixelx=localdata[0].split("/");
