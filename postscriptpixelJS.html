@@ -19,7 +19,7 @@ pixel width:<input id="pxwidth" type="number" value=30 min=1 onchange="draw()"><
  <option value="eraser">Eraser</option>
 <br><input id='color' type='color'></input>
 <button id="grid" onclick="showhidegrid()">Show grid</button><button id="undo" onclick="undo()">undo</button><button id="redo" onclick="redo()">redo</button>
- <button id="st" onclick="clearcanvas()">clear</button><button id="slbutton" onclick="var prompt=prompt('Type in s for save, l for load');if(prompt=='s'||prompt=='S'){save()}else if(prompt=='l'||prompt=='L'){load()}">Save/load</button>
+ <button id="st" onclick="clearcanvas()">clear</button><button id="slbutton" onclick="var prom=prompt('Type in s for save, l for load');if(prom=='s'||prom=='S'){save()}else if(prom=='l'||prom=='L'){load()}">Save/load</button>
 <br><br><br>
 <button type="button" onclick="pixel2ps()" style="border:none;">Make it PostScript!</button><br>
 <textarea id="ps"></textarea><br><br>
@@ -220,7 +220,7 @@ function save(){
 }
 
 function load(){if(typeof locaStorage!='object'){return}
- if(!alert('This will overwrite existing drawing. Continue?')){return}
+ if(!alert('This will overwrite the existing drawing. Continue?')){return}
  pixelx=localStorage.getItem("saveddata")[0];
  pixely=localStorage.getItem("saveddata")[1];
  pixelrgb=localStorage.getItem("saveddata")[2];
