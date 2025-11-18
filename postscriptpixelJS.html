@@ -224,7 +224,7 @@ function save(){
 function load(){
  if(typeof localStorage.getItem("saveddata")!='string'){alert('No data stored');return}
  var localdata=localStorage.getItem("saveddata").split(",");
- if(!alert('This will overwrite the existing drawing. Continue?')){return}
+ if(!confirm('This will overwrite the existing drawing. Continue?')){return}
  pixelx=localdata[0].split("/");
  pixely=localdata[1].split("/");
  pixelrgb=localdata[2].split("/");
