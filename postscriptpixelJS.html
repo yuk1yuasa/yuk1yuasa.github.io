@@ -218,6 +218,8 @@ function redo(){
 
 function save(){
  localStorage.setItem("saveddata", `${pixelx.join("/")},${pixely.join("/")},${pixelrgb.join("/")}`);
+ localStorage.setItem("changelog", `${changelog.join("#")}`);
+ localStorage.setItem("undolog", `${undolog.join("#")}`);
  alert('PostScript saved');
 }
 
@@ -228,6 +230,8 @@ function load(){
  pixelx=localdata[0].split("/");
  pixely=localdata[1].split("/");
  pixelrgb=localdata[2].split("/");
+ changelog=geti("changelog").split("#");
+ undolog=geti("undolog").split("#");
  alert('Loaded on')
  draw();
 }
@@ -243,7 +247,11 @@ draw()
 }
 
 function gete(str){
-return document.getElementById(str)
+return document.getElementById(str);
+}
+
+function geti(str){
+return localStorage.getItem(str);
 }
 </script>
 </body>
