@@ -180,7 +180,13 @@ function showhidegrid(){
 function undo(){
  if(changelog.length<1){return;}
  var lastchange=changelog[changelog.length-1].split(",");
- switch(lastchange[0]){
+ undoaction(lastchange);
+ undolog.push(changelog.pop());
+ draw()
+}
+
+function undoaction(a){
+ switch(a[0]){
   case "a"://undo add
    pixelx.pop()
    pixely.pop()
@@ -189,15 +195,16 @@ function undo(){
   case "c"://undo change color
    pixelrgb[lastchange[1]]=lastchange[2]
    break;
-  case "e":
+  case "e"://undo erase
    pixelx.splice(lastchange[1], 0, lastchange[2]);pixely.splice(lastchange[1], 0, lastchange[3]);pixelrgb.splice(lastchange[1], 0, lastchange[4]);
+   break;
+  case "s"://undo series
+   for(var i=1;i<lastchange.length-1;i++){undoaction(a[i].split("/"))}
    break;
   case "x"://undo clear
    pixelx=lastchange[1].split("/");pixely=lastchange[2].split("/");pixelrgb=lastchange[3].split("/");
    break;
  }
- undolog.push(changelog.pop());
- draw()
 }
 
 function redo(){
