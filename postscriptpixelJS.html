@@ -28,6 +28,13 @@ Try your postscript here↓<br>
 <iframe src='https://ehubsoft.herokuapp.com/psviewer/?authuser=0' title='PostScript compiler' width=700 height=400></iframe>
 <p>Examples of PostScript pixel art:</p><a href='../postscriptgallery.html'>https://yuk1yuasa.github.io/postscriptgallery.html</a>
 <script>
+/**format for most things
+1st level combine:, 2nd level:/ 3rd level:&
+adding pixel:a,x,y,rgb
+overwrting pixel:c,i,rgbold,rgbnew
+erasing:e,i,x,y,rgbold
+clearing:x,pixelx,pixely,pixelrgb
+**/
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 var pixelx = [];var pixely=[];var pixelrgb=[];
@@ -218,8 +225,8 @@ function redo(){
 
 function save(){
  localStorage.setItem("saveddata", `${pixelx.join("/")},${pixely.join("/")},${pixelrgb.join("/")}`);
- localStorage.setItem("changelog", `${changelog.join("#")}`);
- localStorage.setItem("undolog", `${undolog.join("#")}`);
+ localStorage.setItem("changelog", `${changelog.join("&")}`);
+ localStorage.setItem("undolog", `${undolog.join("&")}`);
  alert('PostScript saved');
 }
 
@@ -230,8 +237,8 @@ function load(){
  pixelx=localdata[0].split("/");
  pixely=localdata[1].split("/");
  pixelrgb=localdata[2].split("/");
- changelog=geti("changelog").split("#");
- undolog=geti("undolog").split("#");
+ changelog=geti("changelog").split("&");
+ undolog=geti("undolog").split("&");
  alert('Loaded on')
  draw();
 }
