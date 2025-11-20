@@ -196,13 +196,13 @@ function undoaction(a){
    pixelrgb[lastchange[1]]=lastchange[2]
    break;
   case "e"://undo erase
-   pixelx.splice(lastchange[1], 0, lastchange[2]);pixely.splice(lastchange[1], 0, lastchange[3]);pixelrgb.splice(lastchange[1], 0, lastchange[4]);
+   pixelx.splice(a[1], 0, a[2]);pixely.splice(a[1], 0, a[3]);pixelrgb.splice(a[1], 0, a[4]);
    break;
   case "s"://undo series
-   for(var i=1;i<lastchange.length-1;i++){undoaction(a[i].split("/"))}
+   for(var i=1;i<a.length-1;i++){undoaction(a[i].split("/")[i])}
    break;
   case "x"://undo clear
-   pixelx=lastchange[1].split("/");pixely=lastchange[2].split("/");pixelrgb=lastchange[3].split("/");
+   pixelx=a[1].split("/");pixely=a[2].split("/");pixelrgb=a[3].split("/");
    break;
  }
 }
