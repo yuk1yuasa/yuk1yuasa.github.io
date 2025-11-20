@@ -74,7 +74,7 @@ function clik(event){
   for(i=0;i<pixelx.length;i++){
    if(pixelx[i]==x&&pixely[i]==y){if(!mouseisdown){changelog.push(`e,${i},${x},${y},${pixelrgb[i]}`);}else{mousedownaction.push(`e,${i},${x},${y},${pixelrgb[i]}`);}
    pixelx.splice(i,1);pixely.splice(i,1);pixelrgb.splice(i,1);draw();return;}
-  };
+  };draw();return;
  };
  var rgb = gete('color').value;
  undolog=[];
