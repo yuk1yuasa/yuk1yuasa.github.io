@@ -10,8 +10,8 @@ button{padding:15px 30px;background-color:#fffb24;border-raduis:10px;}
 </head>
 <body onkeydown="move(event)" onmouseup="if(mousedownaction.length>0){changelog.push('s,'+mousedownaction.join('/'))};mousedownaction=[];mouseisdown=false">
 <canvas id="canvas" width=420 height=280 onmousedown="mousedown(event);clik(event);" onmouseup="" onmousemove="mousemove(event)"></canvas>
-canvas width:<input id="width" type="number" value=300 onchange="draw()"></input>
- height:<input id="height" type="number" value=300 onchange="draw()"></input><br><br>
+canvas width:<input id="width" type="number" value=420 onchange="draw()"></input>
+ height:<input id="height" type="number" value=280 onchange="draw()"></input><br><br>
 pixel width:<input id="pxwidth" type="number" value=30 min=1 onchange="draw()"></input>
  height:<input id="pxheight" type="number" value=30 min=1 onchange="draw()"></input><br>
 <select name="tools" id="tools">
