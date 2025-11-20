@@ -42,7 +42,7 @@ var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
 var showgrid = false;
 var changelog=[];
 var undolog=[];
-var mousepos=[];var mouseisdown=false;var mousedownaction=[];
+var mouseisdown=false;var mousedownaction=[];
 draw()
 
 function move(event){
@@ -60,7 +60,7 @@ function move(event){
 }
 
 function mousedown(event){
- mousepos=[event.offsetX, event.offsetY];mouseisdown=true;
+ mouseisdown=true;
 }
 
 function mousemove(event){
