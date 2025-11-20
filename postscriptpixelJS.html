@@ -79,9 +79,9 @@ function clik(event){
  var rgb = gete('color').value;
  undolog=[];
  for(i=0;i<pixelx.length;i++){//overwrite
-  if(pixelx[i]==x&&pixely[i]==y){if(pixelrgb[i]==rgb){return};changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();return;}
+  if(pixelx[i]==x&&pixely[i]==y){if(pixelrgb[i]==rgb){return};changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);draw();return;}
  }
- pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);changelog.push(`a,${x},${y},${rgb}`);
+ pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);changelog.push(`a,${x},${y},${rgb}`);mousedownaction.push(`a,${x},${y},${rgb}`);
  draw()
 }
 
@@ -199,7 +199,8 @@ function undoaction(a){
    pixelx.splice(a[1], 0, a[2]);pixely.splice(a[1], 0, a[3]);pixelrgb.splice(a[1], 0, a[4]);
    break;
   case "s"://undo series
-   var b=a.splice(0, 1).join(",").split("/")
+   a.splice(0, 1)
+   var b=a.join(",").split("/")
    for(var x of b){undoaction(x)}
    break;
   case "x"://undo clear
