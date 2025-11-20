@@ -196,7 +196,7 @@ function undoaction(a){
    pixelrgb[a[1]]=a[2]
    break;
   case "e"://undo erase
-   pixelx.splice(a[1], 0, Number(a[2]));pixely.splice(a[1], 0, Number(a[3]));pixelrgb.splice(a[1], 0, Number(a[4]));
+   pixelx.splice(a[1], 0, Number(a[2]));pixely.splice(a[1], 0, Number(a[3]));pixelrgb.splice(a[1], 0, a[4]);
    break;
   case "s"://undo series
    a.splice(0, 1)
