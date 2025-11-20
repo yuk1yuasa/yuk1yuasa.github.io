@@ -202,7 +202,7 @@ function undoaction(a){
   case "s"://undo series
    a.splice(0, 1)
    var b=a.join(",").split("/")
-   for(var x of b){undoaction(x)}
+   for(var x of b){undoaction(x.split(","))}
    break;
   case "x"://undo clear
    pixelx=a[1].split("/");pixely=a[2].split("/");pixelrgb=a[3].split("/");
