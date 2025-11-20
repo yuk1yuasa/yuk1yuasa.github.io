@@ -9,7 +9,7 @@ button{padding:15px 30px;background-color:#fffb24;border-raduis:10px;}
 </style>
 </head>
 <body onkeydown="move(event)" onmouseup="changelog.push('s,'+mousedownaction.join('/'));mousedownaction=[];mouseisdown=false">
-<canvas id="canvas" width=300 height=300 onmousedown="mousedown(event)" onmouseup="" onmousemove="mousemove(event)"></canvas>
+<canvas id="canvas" width=300 height=300 onmousedown="mousedown(event):clik(event);" onmouseup="" onmousemove="mousemove(event)"></canvas>
 canvas width:<input id="width" type="number" value=300 onchange="draw()"></input>
  height:<input id="height" type="number" value=300 onchange="draw()"></input><br><br>
 pixel width:<input id="pxwidth" type="number" value=30 min=1 onchange="draw()"></input>
