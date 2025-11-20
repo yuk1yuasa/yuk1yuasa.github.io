@@ -180,7 +180,7 @@ function showhidegrid(){
 function undo(){
  if(changelog.length<1){return;}
  var lastchange=changelog[changelog.length-1].split(",");
- undoaction(lastchange);
+ undoaction(changelog[changelog.length-1].split(","));
  undolog.push(changelog.pop());
  draw()
 }
@@ -199,7 +199,8 @@ function undoaction(a){
    pixelx.splice(a[1], 0, a[2]);pixely.splice(a[1], 0, a[3]);pixelrgb.splice(a[1], 0, a[4]);
    break;
   case "s"://undo series
-   for(var i=1;i<a.length-1;i++){undoaction(a[i].split("/")[i])}
+   var b=a.splice(0, 1).join(",").split("/")
+   for(var x of b){undoaction(x)}
    break;
   case "x"://undo clear
    pixelx=a[1].split("/");pixely=a[2].split("/");pixelrgb=a[3].split("/");
