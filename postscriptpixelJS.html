@@ -193,7 +193,7 @@ function undoaction(a){
    pixelrgb.pop()
    break;
   case "c"://undo change color
-   pixelrgb[lastchange[1]]=lastchange[2]
+   pixelrgb[a[1]]=a[2]
    break;
   case "e"://undo erase
    pixelx.splice(a[1], 0, a[2]);pixely.splice(a[1], 0, a[3]);pixelrgb.splice(a[1], 0, a[4]);
