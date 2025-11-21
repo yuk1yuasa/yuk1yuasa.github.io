@@ -79,7 +79,7 @@ function clik(event){
  var rgb = gete('color').value;
  undolog=[];
  for(i=0;i<pixelx.length;i++){//overwrite
-  if(pixelx[i]==x&&pixely[i]==y){if(pixelrgb[i]==rgb){return};pixelrgb[i]=rgb;mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);/***changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);***/draw();return;}
+  if(pixelx[i]==x&&pixely[i]==y){if(pixelrgb[i]==rgb){return};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;/***changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);***/draw();return;}
  }
  pixelx.push(x);pixely.push(y);pixelrgb.push(rgb);mousedownaction.push(`a,${x},${y},${rgb}`);//changelog.push(`a,${x},${y},${rgb}`);
  draw()
