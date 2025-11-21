@@ -196,7 +196,6 @@ function undoaction(a){
    pixelrgb[a[1]]=a[2]
    break;
   case "e"://undo erase
-   console.log(a);
    pixelx.splice(a[1], 0, Number(a[2]));pixely.splice(a[1], 0, Number(a[3]));pixelrgb.splice(a[1], 0, a[4]);
    break;
   case "s"://undo series
@@ -210,25 +209,34 @@ function undoaction(a){
  }
 }
 
-function redo(){
- if(undolog.length<1){return;}
- if(typeof undolog[undolog.length-1]=='object'){for(var i=0;i<undolog[undolog.length-1].length;i++){}};
- var lastundo=undolog[undolog.length-1].split(",");
- switch(lastundo[0]){
+function redoaction(a){
+ switch(a[0]){
   case "a"://redo add
-   pixelx.push(lastundo[1]);pixely.push(lastundo[2]);pixelrgb.push(lastundo[3]);
+   pixelx.push(a[1]);pixely.push(a[2]);pixelrgb.push(a[3]);
    break;
   case "c"://redo change color
-   pixelrgb[lastundo[1]]=lastundo[3];
+   pixelrgb[a[1]]=a[3];
+   break;
+  case "e"://redo erasing
+   pixelx.splice(a[1],1);pixely.splice(a[1],1);pixelrgb.splice(a[1],1);
+   break;
+  case "s"://redo series
+   a.splice(0, 1)
+   var b=a.join(",").split("/")
+   for(var x of b){redoaction(x.split(","))}
    break;
   case "x"://redo clear
    pixelx = [];pixely=[];pixelrgb=[];
    pxx='';pxy='';pxr='';pxg='';pxb='';
    break;
-  case "e"://redo erasing
-   pixelx.splice(lastundo[1],1);pixely.splice(lastundo[1],1);pixelrgb.splice(lastundo[1],1);
-   break;
  }
+}
+ 
+function redo(){
+ if(undolog.length<1){return;}
+ if(typeof undolog[undolog.length-1]=='object'){for(var i=0;i<undolog[undolog.length-1].length;i++){}};
+ var lastundo=undolog[undolog.length-1].split(",");
+ redoaction(lastundo);
  changelog.push(undolog.pop());
  draw();
 }
