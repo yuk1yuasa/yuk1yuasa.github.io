@@ -13,7 +13,7 @@ button{padding:15px 30px;background-color:#fffb24;border-raduis:10px;}
 canvas width:<input id="width" type="number" value=420 onchange="draw()"></input>
  height:<input id="height" type="number" value=280 onchange="draw()"></input><br><br>
 pixel width:<input id="pxwidth" type="number" value=20 min=1 onchange="draw()"></input>
- height:<input id="pxheight" type="number" value=20 min=1 step=1 onchange="draw()"></input><br>
+ height:<input id="pxheight" type="number" value=20 min=1 onchange="draw()"></input><br>
 <select name="tools" id="tools">
  <option value="pixel">Pixel</option>
  <option value="eraser">Eraser</option>
@@ -21,7 +21,7 @@ pixel width:<input id="pxwidth" type="number" value=20 min=1 onchange="draw()"><
 <br><input id='color' type='color'></input>
 <button id="grid" onclick="showhidegrid()">Show grid</button><button id="undo" onclick="undo()">undo</button><button id="redo" onclick="redo()">redo</button>
  <button id="st" onclick="clearcanvas()">clear</button><button id="slbutton" onclick="var prom=prompt('Type in s for save, l for load');if(prom=='s'||prom=='S'){save()}else if(prom=='l'||prom=='L'){load()}">Save/load</button>
-<p>Pixel size: </p><input id="pixelsize" type="number" value=1 min=1></input>
+<p>Pixel size: </p><input id="pixelsize" type="number" value=1 min=1 step=1></input>
  <br><br><br>
 <button type="button" onclick="pixel2ps()" style="border:none;">Make it PostScript!</button><br>
 <textarea id="ps"></textarea><br><br>
@@ -72,7 +72,7 @@ function mousemove(event){
 function clik(event){
  var x = Math.floor(event.offsetX/gete('pxwidth').value);
  var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
- var r = gete('pixelsize').value;
+ var r = Number(gete('pixelsize').value);
  if(gete("tools").value=="eraser"){//erase
   for(var dx=-1*r+x+1;dx<r+x;dx++){for(var dy=-1*r+y+1;dy<r+y;dy++){
   for(i=0;i<pixelx.length;i++){
