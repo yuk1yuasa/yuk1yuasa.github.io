@@ -72,7 +72,7 @@ function mousemove(event){
 function clik(event){
  var x = Math.floor(event.offsetX/gete('pxwidth').value);
  var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
- var r = gete('pixelsize').value;
+ var r = gete('pixelsize').value;console.log(r);
  if(gete("tools").value=="eraser"){//erase
   for(var dx=-1*r+x+1;dx<r+x;dx++){for(var dy=-1*r+y+1;dy<r+y;dy++){
   for(i=0;i<pixelx.length;i++){
@@ -82,11 +82,11 @@ function clik(event){
  };
  var rgb = gete('color').value;
  undolog=[];
- for(var dx=-1*r+x+1;dx<r+x;dx++){for(var dy=-1*r+y+1;dy<r+y;dy++){
+ for(var dx=-1*r+x+1;dx<r+x;dx++){for(var dy=-1*r+y+1;dy<r+y;dy++){console.log(`${dx},${dy}`)
  for(i=0;i<pixelx.length;i++){//overwrite
-  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){return};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;/***changelog.push(`c,${i},${pixelrgb[i]},${rgb}`);***/draw();return;}
+  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){return};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();return;}
  }
- pixelx.push(dx);pixely.push(dy);pixelrgb.push(rgb);mousedownaction.push(`a,${dx},${dy},${rgb}`);}}
+ pixelx.push(dx);pixely.push(dy);pixelrgb.push(rgb);mousedownaction.push(`a,${dx},${dy},${rgb}`);};}
  draw()
 }
 
