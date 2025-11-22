@@ -72,19 +72,20 @@ function mousemove(event){
 function clik(event){
  var x = Math.floor(event.offsetX/gete('pxwidth').value);
  var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
- var r = gete('pixelsize').value;console.log(r);
+ var r = gete('pixelsize').value;
  if(gete("tools").value=="eraser"){//erase
   for(var dx=-1*r+x+1;dx<r+x;dx++){for(var dy=-1*r+y+1;dy<r+y;dy++){
   for(i=0;i<pixelx.length;i++){
    if(pixelx[i]==dx&&pixely[i]==dy){if(!mouseisdown){changelog.push(`e,${i},${dx},${dy},${pixelrgb[i]}`);}else{mousedownaction.push(`e,${i},${dx},${dy},${pixelrgb[i]}`);}
-   pixelx.splice(i,1);pixely.splice(i,1);pixelrgb.splice(i,1);draw();return;}
+   pixelx.splice(i,1);pixely.splice(i,1);pixelrgb.splice(i,1);draw();break;;}
   };};};draw();return;
  };
  var rgb = gete('color').value;
  undolog=[];
+ console.log(`${-1*r+x+1}///${r+x}`)
  for(var dx=-1*r+x+1;dx<r+x;dx++){for(var dy=-1*r+y+1;dy<r+y;dy++){console.log(`${dx},${dy}`)
  for(i=0;i<pixelx.length;i++){//overwrite
-  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){return};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();return;}
+  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){break;};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();break;}
  }
  pixelx.push(dx);pixely.push(dy);pixelrgb.push(rgb);mousedownaction.push(`a,${dx},${dy},${rgb}`);};}
  draw()
