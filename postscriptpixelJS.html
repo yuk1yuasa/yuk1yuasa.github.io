@@ -11,10 +11,10 @@ button{padding:15px 30px;background-color:#fffb24;border-raduis:10px;}
 </head>
 <body onkeydown="move(event)" onmouseup="if(mousedownaction.length>0){changelog.push('s,'+mousedownaction.join('/'))};mousedownaction=[];mouseisdown=false">
 <div id="drawingpart"><canvas id="canvas" width=420 height=280 onmousedown="mousedown(event);clik(event);" onmouseup="" onmousemove="mousemove(event)"></canvas>
-canvas width:<input id="width" type="number" value=420 onchange="canvassize[0]=this.value;draw();"></input>
- height:<input id="height" type="number" value=280 onchange="canvassize[1]=this.value;draw();"></input><br><br>
-pixel width:<input id="pxwidth" type="number" value=20 min=1 onchange="draw()"></input>
- height:<input id="pxheight" type="number" value=20 min=1 onchange="draw()"></input><br>
+canvas width:<input id="width" type="number" value=420 onchange="size[0]=this.value;draw();"></input>
+ height:<input id="height" type="number" value=280 onchange="size[1]=this.value;draw();"></input><br><br>
+pixel width:<input id="pxwidth" type="number" value=20 min=1 onchange="size[2]=this.value;draw();"></input>
+ height:<input id="pxheight" type="number" value=20 min=1 onchange="size[3]=this.value;draw();"></input><br>
 <select name="tools" id="tools">
  <option value="pixel">Pixel</option>
  <option value="eraser">Eraser</option>
@@ -39,7 +39,9 @@ overwrting pixel:c,i,rgbold,rgbnew
 erasing:e,i,x,y,rgbold
 clearing:x,pixelx,pixely,pixelrgb
 **/
-let canvas = document.getElementById("canvas");var canvassize=[gete('width').value, gete('height').value];
+let canvas = document.getElementById("canvas");
+var size=['width', 'height', 'pxwidth', 'pxheight'];
+size=size.map(function(a){return Number(gete(a).value)});
 let ctx = canvas.getContext("2d");
 var pixelx = [];var pixely=[];var pixelrgb=[];
 var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
@@ -79,13 +81,13 @@ function fullscreen(out){
   } else if (document.msExitFullscreen) { /* IE11 */
     document.msExitFullscreen();
   }
-  canvassize[0]=gete('width').value;
-  canvassize[1]=gete('height').value;
+  size=['width', 'height', 'pxwidth', 'pxheight'];
+  size=size.map(function(a){return Number(gete(a).value)});
   draw();
   return;
  }
  var content = gete('canvas')
- canvassize=[screen.width, screen.height];
+ size=[screen.width, screen.height, size[2]*screen.width/size[0], size[3]*screen.height/size[1]];
   if (content.requestFullscreen) {
     content.requestFullscreen();
   } else if (content.webkitRequestFullscreen) { /* Safari */
@@ -105,8 +107,8 @@ function mousemove(event){
 }
  
 function clik(event){
- var x = Math.floor(event.offsetX/gete('pxwidth').value);
- var y = Math.floor((canvas.height-event.offsetY)/gete('pxheight').value);
+ var x = Math.floor(event.offsetX/size[2]);
+ var y = Math.floor((canvas.height-event.offsetY)/size[3]);
  var r = Number(gete('pixelsize').value);
  if(gete("tools").value=="eraser"){//erase
   for(var dx=-1*r+x+1;dx<r+x;dx++){for(var dy=-1*r+y+1;dy<r+y;dy++){
@@ -129,10 +131,10 @@ function clik(event){
 }
 
 function draw(){
-canvas.width=canvassize[0];
-canvas.height=canvassize[1];
+canvas.width=size[0];
+canvas.height=size[1];
 ctx.setTransform(1, 0, 0, -1, 0, canvas.height);
-var w = gete('pxwidth').value;var h = gete('pxheight').value;
+var w = size[2];var h = size[3];
 if(showgrid){//show grid
  var strokestyle=ctx.strokeStyle;
  ctx.strokeStyle='black';
