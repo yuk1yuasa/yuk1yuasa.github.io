@@ -87,7 +87,7 @@ function clik(event){
  loop1: for(var dx=-1*r+x+1;dx<r+x;dx++){
  for(var dy=-1*r+y+1;dy<r+y;dy++){
  for(i=0;i<pixelx.length;i++){//overwrite
-  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){break loop1;};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();break loop1;}
+  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){continue;};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();continue;}
  }
  pixelx.push(dx);pixely.push(dy);pixelrgb.push(rgb);mousedownaction.push(`a,${dx},${dy},${rgb}`);};}
  draw()
