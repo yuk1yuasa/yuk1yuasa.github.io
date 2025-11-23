@@ -79,8 +79,9 @@ function fullscreen(out){
   } else if (document.msExitFullscreen) { /* IE11 */
     document.msExitFullscreen();
   }
-  canvas.width=canvassize[0];
-  canvas.height=canvassize[1];
+  canvassize[0]=gete('width').value;
+  canvassize[1]=gete('height').value;
+  draw();
   return;
  }
  var content = gete('canvas')
