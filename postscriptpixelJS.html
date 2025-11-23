@@ -10,7 +10,7 @@ button{padding:15px 30px;background-color:#fffb24;border-raduis:10px;}
 </style>
 </head>
 <body onkeydown="move(event)" onmouseup="if(mousedownaction.length>0){changelog.push('s,'+mousedownaction.join('/'))};mousedownaction=[];mouseisdown=false">
-<div id="canvaslabel"><canvas id="canvas" width=420 height=280 onmousedown="mousedown(event);clik(event);" onmouseup="" onmousemove="mousemove(event)"></canvas>
+<div id="drawingpart"><canvas id="canvas" width=420 height=280 onmousedown="mousedown(event);clik(event);" onmouseup="" onmousemove="mousemove(event)"></canvas>
 canvas width:<input id="width" type="number" value=420 onchange="canvassize[0]=this.value;draw();"></input>
  height:<input id="height" type="number" value=280 onchange="canvassize[1]=this.value;draw();"></input><br><br>
 pixel width:<input id="pxwidth" type="number" value=20 min=1 onchange="draw()"></input>
@@ -22,8 +22,8 @@ pixel width:<input id="pxwidth" type="number" value=20 min=1 onchange="draw()"><
 <br><input id='color' type='color'></input>
 <button id="grid" onclick="showhidegrid()">Show grid</button><button id="undo" onclick="undo()">undo</button><button id="redo" onclick="redo()">redo</button>
  <button id="st" onclick="clearcanvas()">clear</button><button id="slbutton" onclick="var prom=prompt('Type in s for save, l for load');if(prom=='s'||prom=='S'){save()}else if(prom=='l'||prom=='L'){load()}">Save/load</button><button id="fullsc" onclick="fullscreen()">fullscreen</button>
-</div>
- <p>Pixel size: </p><input id="pixelsize" type="number" value=1 min=1 step=1></input>
+ Pixel size: <input id="pixelsize" type="number" value=1 min=1 step=1></input>
+ </div>
  <br><br><br>
 <button type="button" onclick="pixel2ps()" style="border:none;">Make it PostScript!</button><br>
 <textarea id="ps"></textarea><br><br>
@@ -83,8 +83,8 @@ function fullscreen(out){
   canvas.height=canvassize[1];
   return;
  }
- var content = gete('canvaslabel')
- canvassize=[gete('width').value, gete('height').value];
+ var content = gete('canvas')
+ canvassize=[screen.width, screen.height];
   if (content.requestFullscreen) {
     content.requestFullscreen();
   } else if (content.webkitRequestFullscreen) { /* Safari */
@@ -92,8 +92,7 @@ function fullscreen(out){
   } else if (content.msRequestFullscreen) { /* IE11 */
     content.msRequestFullscreen();
   }
- canvas.width=screen.width;
- canvas.height=screen.height;
+ draw();
 }
  
 function mousedown(event){
