@@ -82,8 +82,7 @@ function fullscreen(out){
   } else if (document.msExitFullscreen) { /* IE11 */
     document.msExitFullscreen();
   }
-  sizes=['width', 'height', 'pxwidth', 'pxheight'];
-  sizes=sizes.map(function(a){return Number(gete(a).value)});
+  sizes=[Number(gete('width').value), Number(gete('height').value), Number(gete('pxwidth').value), Number(gete('pxheight').value)];
   draw();
   return;
  }
