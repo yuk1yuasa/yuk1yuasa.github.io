@@ -122,9 +122,9 @@ function clik(event){
  console.log(`${typeof r}${typeof x}`)
  console.log(`${-1*r+x+1}///${r+x}///${x+r}`)
  loop1: for(var dx=-1*r+x+1;dx<r+x;dx++){
- for(var dy=-1*r+y+1;dy<r+y;dy++){
+ loop2: for(var dy=-1*r+y+1;dy<r+y;dy++){
  for(i=0;i<pixelx.length;i++){//overwrite
-  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){continue;};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();continue;}
+  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){continue loop2;};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();continue loop2;}
  }
  pixelx.push(dx);pixely.push(dy);pixelrgb.push(rgb);mousedownaction.push(`a,${dx},${dy},${rgb}`);};}
  draw()
