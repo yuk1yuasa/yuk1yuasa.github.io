@@ -26,7 +26,8 @@ pixel width:<input id="pxwidth" type="number" value=20 min=1 oninput="sizes[2]=N
  </div>
  <br><br><br>
 <button type="button" onclick="pixel2ps()" style="border:none;">Make it PostScript!</button><br>
-<textarea id="ps"></textarea><br><br>
+<textarea id="ps"></textarea><br>
+<button type="button" onclick="copyps()" style="border:none;">Copy PostScript!</button><br><br>
 
 Try your postscript here↓<br>
 <iframe src='https://ehubsoft.herokuapp.com/psviewer/?authuser=0' title='PostScript compiler' width=700 height=400></iframe>
@@ -131,7 +132,7 @@ function clik(event){
 }
 
 function draw(){
-for(x of sizes){if(x==0){return;}};
+for(x of sizes){if(Number(x)==0){return;}};
 console.log(sizes);
 canvas.width=sizes[0];
 canvas.height=sizes[1];
@@ -212,6 +213,14 @@ showpage`
     document.getElementById('ps').value=str
 }
 
+function copyps(){
+ var copyps=gete('ps');
+ copyps.select();
+ copyps.setSelectionRange(0, 99999);
+ navigator.clipboard.writeText(copyps.value);
+ alert('PostScript copied!');
+}
+ 
 function showhidegrid(){
  var grid=gete('grid');
  if(!showgrid){
