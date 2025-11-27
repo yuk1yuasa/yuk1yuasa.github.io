@@ -165,19 +165,19 @@ function pixel2ps(){
     
     pxr='['
     for(var i=0; i<pixelrgb.length;i++){
-        pxr=pxr+Number('0x'+pixelrgb[i].slice(1, 3))/255+' '
+        pxr=pxr+Number('0x'+pixelrgb[i].slice(1, 3))+' '
     }
     pxr=pxr+']'
     
     pxg='['
     for(var i=0; i<pixelrgb.length;i++){
-        pxg=pxg+Number('0x'+pixelrgb[i].slice(3, 5))/255+' '
+        pxg=pxg+Number('0x'+pixelrgb[i].slice(3, 5))+' '
     }
     pxg=pxg+']'
     
     pxb='['
     for(var i=0; i<pixelrgb.length;i++){
-        pxb=pxb+Number('0x'+pixelrgb[i].slice(5, 7))/255+' '
+        pxb=pxb+Number('0x'+pixelrgb[i].slice(5, 7))+' '
     }
     pxb=pxb+']'
 
@@ -199,7 +199,7 @@ function pixel2ps(){
 /b ${pxb} def
 
 0 1 xcoord length 1 sub {dup
-dup dup r exch get exch dup g exch get exch b exch get setrgbcolor
+dup dup r 255 div exch get exch dup g 255 div exch get exch b 255 div exch get setrgbcolor
 newpath
 dup dup xcoord exch get x mul exch ycoord exch get y mul moveto
 dup dup xcoord exch get x mul x add exch ycoord exch get y mul lineto
