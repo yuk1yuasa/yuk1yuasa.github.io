@@ -199,7 +199,7 @@ function pixel2ps(){
 /b ${pxb} def
 
 0 1 xcoord length 1 sub {dup
-dup dup r 255 div exch get exch dup g 255 div exch get exch b 255 div exch get setrgbcolor
+dup dup r exch get 255 div exch dup g exch get 255 div exch b exch get 255 div setrgbcolor
 newpath
 dup dup xcoord exch get x mul exch ycoord exch get y mul moveto
 dup dup xcoord exch get x mul x add exch ycoord exch get y mul lineto
