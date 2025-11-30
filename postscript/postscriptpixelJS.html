@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>Pixel art to PostScript</title>
+<style>
+canvas{border: 1px solid black;padding: 0;display: block;}
+button{padding:15px 30px;background-color:#fffb24;border-raduis:10px;}
+:fullscreen {background-color:yellow;}
+</style>
+</head>
+<body onkeydown="move(event)" onmouseup="if(mousedownaction.length>0){changelog.push('s,'+mousedownaction.join('/'))};mousedownaction=[];mouseisdown=false">
+<div id="drawingpart"><canvas id="canvas" width=420 height=280 onmousedown="mousedown(event);clik(event);" onmouseup="" onmousemove="mousemove(event)"></canvas>
+canvas width:<input id="width" type="number" value=420 oninput="sizes[0]=Number(gete('width').value);draw();"></input>
+ height:<input id="height" type="number" value=280 oninput="sizes[1]=Number(gete('height').value);draw();"></input><br><br>
+pixel width:<input id="pxwidth" type="number" value=20 min=1 oninput="sizes[2]=Number(gete('pxwidth').value);draw();"></input>
+ height:<input id="pxheight" type="number" value=20 min=1 oninput="sizes[3]=Number(gete('pxheight').value);draw();"></input><br>
+<select name="tools" id="tools">
+ <option value="pixel">Pixel</option>
+ <option value="eraser">Eraser</option>
+</select>
+<br><input id='color' type='color'></input>
+<button id="grid" onclick="showhidegrid()">Show grid</button><button id="undo" onclick="undo()">undo</button><button id="redo" onclick="redo()">redo</button>
+ <button id="st" onclick="clearcanvas()">clear</button><button id="slbutton" onclick="var prom=prompt('Type in s for save, l for load');if(prom=='s'||prom=='S'){save()}else if(prom=='l'||prom=='L'){load()}">Save/load</button><button id="fullsc" onclick="fullscreen()">fullscreen</button>
+ Pixel size: <input id="pixelsize" type="number" value=1 min=1 step=1></input>
+ </div>
+ <br><br><br>
+<button type="button" onclick="pixel2ps()" style="border:none;">Make it PostScript!</button><br>
+<textarea id="ps"></textarea><br>
+<button type="button" onclick="copyps()" style="border:none;">Copy PostScript!</button><br><br>
+
+Try your postscript here↓<br>
+<iframe src='https://ehubsoft.herokuapp.com/psviewer/?authuser=0' title='PostScript compiler' width=700 height=400></iframe>
+<p>Examples of PostScript pixel art:</p><a href='../postscriptgallery.html'>https://yuk1yuasa.github.io/postscriptgallery.html</a>
+<script>
+/**format for most things
+1st level combine:, 2nd level:/ 3rd level:&
+adding pixel:a,x,y,rgb
+overwrting pixel:c,i,rgbold,rgbnew
+erasing:e,i,x,y,rgbold
+clearing:x,pixelx,pixely,pixelrgb
+**/
+let canvas = document.getElementById("canvas");
+var sizes=['width', 'height', 'pxwidth', 'pxheight'];
+sizes=sizes.map(function(a){return Number(gete(a).value)});
+let ctx = canvas.getContext("2d");
+var pixelx = [];var pixely=[];var pixelrgb=[];
+var pxx='';var pxy='';var pxr='';var pxg='';var pxb='';
+var showgrid = false;
+var changelog=[];
+var undolog=[];
+var mouseisdown=false;var mousedownaction=[];
+draw()
+
+ 
+function move(event){
+ switch(event.key){
+  case "u":
+   undo();
+   break;
+  case "r":
+   redo();
+   break;
+  case "g":
+   showhidegrid();
+   break;
+  case "f":
+   fullscreen();
+   break;
+  case "Escape":
+   fullscreen(true);
+   break;
+ }
+}
+
+function fullscreen(out){
+ if(typeof out!='boolean'){out=false;}
+ if(out){
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) { /* Safari */
+    document.webkitExitFullscreen();
+  } else if (document.msExitFullscreen) { /* IE11 */
+    document.msExitFullscreen();
+  }
+  sizes=[Number(gete('width').value), Number(gete('height').value), Number(gete('pxwidth').value), Number(gete('pxheight').value)];
+  draw();
+  return;
+ }
+ var content = gete('canvas')
+ sizes=[screen.width, screen.height, sizes[2]*screen.width/sizes[0], sizes[3]*screen.height/sizes[1]];
+  if (content.requestFullscreen) {
+    content.requestFullscreen();
+  } else if (content.webkitRequestFullscreen) { /* Safari */
+    content.webkitRequestFullscreen();
+  } else if (content.msRequestFullscreen) { /* IE11 */
+    content.msRequestFullscreen();
+  }
+ draw();
+}
+ 
+function mousedown(event){
+ mouseisdown=true;
+}
+
+function mousemove(event){
+ if(mouseisdown){clik(event)};
+}
+ 
+function clik(event){
+ var x = Math.floor(event.offsetX/sizes[2]);
+ var y = Math.floor((canvas.height-event.offsetY)/sizes[3]);
+ var r = Number(gete('pixelsize').value);
+ if(gete("tools").value=="eraser"){//erase
+  for(var dx=-1*r+x+1;dx<r+x;dx++){for(var dy=-1*r+y+1;dy<r+y;dy++){
+  for(i=0;i<pixelx.length;i++){
+   if(pixelx[i]==dx&&pixely[i]==dy){if(!mouseisdown){changelog.push(`e,${i},${dx},${dy},${pixelrgb[i]}`);}else{mousedownaction.push(`e,${i},${dx},${dy},${pixelrgb[i]}`);}
+   pixelx.splice(i,1);pixely.splice(i,1);pixelrgb.splice(i,1);draw();break;;}
+  };};};draw();return;
+ };
+ var rgb = gete('color').value;
+ undolog=[];
+ console.log(`${typeof r}${typeof x}`)
+ console.log(`${-1*r+x+1}///${r+x}///${x+r}`)
+ loop1: for(var dx=-1*r+x+1;dx<r+x;dx++){
+ loop2: for(var dy=-1*r+y+1;dy<r+y;dy++){
+ for(i=0;i<pixelx.length;i++){//overwrite
+  if(pixelx[i]==dx&&pixely[i]==dy){if(pixelrgb[i]==rgb){continue loop2;};mousedownaction.push(`c,${i},${pixelrgb[i]},${rgb}`);pixelrgb[i]=rgb;draw();continue loop2;}
+ }
+ pixelx.push(dx);pixely.push(dy);pixelrgb.push(rgb);mousedownaction.push(`a,${dx},${dy},${rgb}`);};}
+ draw()
+}
+
+function draw(){
+for(x of sizes){if(Number(x)==0){return;}};
+console.log(sizes);
+canvas.width=sizes[0];
+canvas.height=sizes[1];
+ctx.setTransform(1, 0, 0, -1, 0, canvas.height);
+var w = sizes[2];var h = sizes[3];
+if(showgrid){//show grid
+ var strokestyle=ctx.strokeStyle;
+ ctx.strokeStyle='black';
+ for(var i=1;i<=Math.floor(canvas.width/w);i++){//vertical lines
+  ctx.moveTo(w*i, 0);
+  ctx.lineTo(w*i, canvas.height);
+ }
+ for(var j=1;j<=Math.floor(canvas.height/h);j++){//horizontal lines
+  ctx.moveTo(0, h*j);
+  ctx.lineTo(canvas.width, h*j);
+ }
+ ctx.stroke();
+ ctx.strokeStyle=strokestyle;
+}
+for(var i=0;i<pixelx.length;i++){//draw pixels
+    ctx.fillStyle=pixelrgb[i];
+    ctx.fillRect(pixelx[i]*w, pixely[i]*h, w, h);
+}
+}
+ 
+function pixel2ps(){
+    pxx='['+pixelx.join(" ")+']'
+
+    pxy='['+pixely.join(" ")+']'
+    
+    pxr='['
+    for(var i=0; i<pixelrgb.length;i++){
+        pxr=pxr+Number('0x'+pixelrgb[i].slice(1, 3))+' '
+    }
+    pxr=pxr+']'
+    
+    pxg='['
+    for(var i=0; i<pixelrgb.length;i++){
+        pxg=pxg+Number('0x'+pixelrgb[i].slice(3, 5))+' '
+    }
+    pxg=pxg+']'
+    
+    pxb='['
+    for(var i=0; i<pixelrgb.length;i++){
+        pxb=pxb+Number('0x'+pixelrgb[i].slice(5, 7))+' '
+    }
+    pxb=pxb+']'
+
+    var str=`%!PS-Adobe-3.0
+
+/xpx ${canvas.width} def 
+/ypx ${canvas.height} def 
+%specify x and y pdf size
+/x ${document.getElementById('pxwidth').value} def 
+/y ${document.getElementById('pxheight').value} def
+%specify x and y pixel size(NOT pixel number)
+
+<< /PageSize [xpx ypx]>> setpagedevice
+
+/xcoord ${pxx} def 
+/ycoord ${pxy} def
+/r ${pxr} def
+/g ${pxg} def
+/b ${pxb} def
+
+0 1 xcoord length 1 sub {dup
+dup dup r exch get 255 div exch dup g exch get 255 div exch b exch get 255 div setrgbcolor
+newpath
+dup dup xcoord exch get x mul exch ycoord exch get y mul moveto
+dup dup xcoord exch get x mul x add exch ycoord exch get y mul lineto
+dup dup xcoord exch get x mul x add exch ycoord exch get y mul y add lineto
+dup dup xcoord exch get x mul exch ycoord exch get y mul y add lineto
+closepath
+fill
+} for
+
+showpage`
+    document.getElementById('ps').value=str
+}
+
+function copyps(){
+ var copyps=gete('ps');
+ copyps.select();
+ copyps.setSelectionRange(0, 99999);
+ navigator.clipboard.writeText(copyps.value);
+ alert('PostScript copied!');
+}
+ 
+function showhidegrid(){
+ var grid=gete('grid');
+ if(!showgrid){
+  showgrid=true;
+  grid.innerHTML='Hide grid';
+ }else{
+  showgrid=false;
+  grid.innerHTML='Show grid';
+ }
+ draw();
+}
+ 
+function undo(){
+ if(changelog.length<1){return;}
+ var lastchange=changelog[changelog.length-1].split(",");
+ undoaction(changelog[changelog.length-1].split(","));
+ undolog.push(changelog.pop());
+ draw()
+}
+
+function undoaction(a){
+ switch(a[0]){
+  case "a"://undo add
+   pixelx.pop()
+   pixely.pop()
+   pixelrgb.pop()
+   break;
+  case "c"://undo change color
+   pixelrgb[a[1]]=a[2]
+   break;
+  case "e"://undo erase
+   pixelx.splice(a[1], 0, Number(a[2]));pixely.splice(a[1], 0, Number(a[3]));pixelrgb.splice(a[1], 0, a[4]);
+   break;
+  case "s"://undo series
+   a.splice(0, 1)
+   var b=a.join(",").split("/")
+   for(var x of b){undoaction(x.split(","))}
+   break;
+  case "x"://undo clear
+   pixelx=a[1].split("/");pixely=a[2].split("/");pixelrgb=a[3].split("/");
+   break;
+ }
+}
+
+function redoaction(a){
+ switch(a[0]){
+  case "a"://redo add
+   pixelx.push(a[1]);pixely.push(a[2]);pixelrgb.push(a[3]);
+   break;
+  case "c"://redo change color
+   pixelrgb[a[1]]=a[3];
+   break;
+  case "e"://redo erasing
+   pixelx.splice(a[1],1);pixely.splice(a[1],1);pixelrgb.splice(a[1],1);
+   break;
+  case "s"://redo series
+   a.splice(0, 1)
+   var b=a.join(",").split("/")
+   for(var x of b){redoaction(x.split(","))}
+   break;
+  case "x"://redo clear
+   pixelx = [];pixely=[];pixelrgb=[];
+   pxx='';pxy='';pxr='';pxg='';pxb='';
+   break;
+ }
+}
+ 
+function redo(){
+ if(undolog.length<1){return;}
+ if(typeof undolog[undolog.length-1]=='object'){for(var i=0;i<undolog[undolog.length-1].length;i++){}};
+ var lastundo=undolog[undolog.length-1].split(",");
+ redoaction(lastundo);
+ changelog.push(undolog.pop());
+ draw();
+}
+
+function save(){
+ localStorage.setItem("saveddata", `${pixelx.join("/")},${pixely.join("/")},${pixelrgb.join("/")}`);
+ localStorage.setItem("changelog", `${changelog.join("&")}`);
+ localStorage.setItem("undolog", `${undolog.join("&")}`);
+ alert('PostScript saved');
+}
+
+function load(){
+ if(typeof localStorage.getItem("saveddata")!='string'){alert('No data stored');return}
+ var localdata=localStorage.getItem("saveddata").split(",");
+ if(!confirm('This will overwrite the existing drawing. Continue?')){return}
+ pixelx=localdata[0].split("/");
+ pixely=localdata[1].split("/");
+ pixelrgb=localdata[2].split("/");
+ changelog=geti("changelog").split("&");
+ undolog=geti("undolog").split("&");
+ alert('Loaded on')
+ draw();
+}
+ 
+function clearcanvas(){
+if(pixelx.length<1){return;}
+//add to changelog
+changelog.push(`x,${pixelx.join("/")},${pixely.join("/")},${pixelrgb.join("/")}`)
+//erase afterwards
+pixelx = [];pixely=[];pixelrgb=[];
+pxx='';pxy='';pxr='';pxg='';pxb='';
+draw()
+}
+
+function gete(str){
+return document.getElementById(str);
+}
+
+function geti(str){
+return localStorage.getItem(str);
+}
+</script>
+</body>
+</html>
