@@ -203,12 +203,7 @@ function pixel2ps(){
 
 0 1 xcoord length 1 sub {dup
 dup dup r exch get 255 div exch dup g exch get 255 div exch b exch get 255 div setrgbcolor
-newpath
-dup dup xcoord exch get x mul exch ycoord exch get y mul moveto
-dup dup xcoord exch get x mul x add exch ycoord exch get y mul lineto
-dup dup xcoord exch get x mul x add exch ycoord exch get y mul y add lineto
-dup dup xcoord exch get x mul exch ycoord exch get y mul y add lineto
-closepath
+dup dup xcoord exch get x mul exch ycoord exch get y mul dup dup xcoord exch get x mul x add exch ycoord exch get y mul y add rectfill
 fill
 } for
 
