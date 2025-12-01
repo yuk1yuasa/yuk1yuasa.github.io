@@ -201,11 +201,17 @@ function pixel2ps(){
 /g ${pxg} def
 /b ${pxb} def
 
-0 1 xcoord length 1 sub {dup
-dup dup r exch get 255 div exch dup g exch get 255 div exch b exch get 255 div setrgbcolor
-dup dup xcoord exch get x mul exch ycoord exch get y mul dup dup xcoord exch get x mul x add exch ycoord exch get y mul y add rectfill
-fill
+/placeblock { %stack: xcoord ycoord r g b
+/b exch def /g exch def /r exch def /ycoord exch def /xcoord exch def
+0 1 xcoord length 1 sub {
+ /iter exch def
+ r iter get 255 div g iter get 255 div b iter get 255 div setrgbcolor
+ xcoord iter get x mul ycoord iter get y mul x y rectfill
+ clear
 } for
+} def
+
+xcoord ycoord r g b placeblock
 
 showpage`
     document.getElementById('ps').value=str
